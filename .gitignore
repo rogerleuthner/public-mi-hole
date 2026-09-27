@@ -1,0 +1,4 @@
+*/node_modules/*
+*/dist/*
+main/dns_database/dns.db
+junk

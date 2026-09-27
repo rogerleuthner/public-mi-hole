@@ -1,0 +1,56 @@
+{
+"[javascript][javascriptreact]": {
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+},
+  "files.associations": {
+    "*.mpy": "python",
+    "*.my": "python"
+  },
+  "micropython-ide.deviceCodePath": "device_code",
+  "micropython-ide.targetMCU": "esp32s3",
+  "python.languageServer": "Pylance",
+  "python.analysis.typeCheckingMode": "basic",
+  "python.analysis.stubPath": "C:\\Users\\Roger\\.micropython-studio\\stubs\\micropython-esp32-stubs",  
+    "python.analysis.typeshedPaths": [
+        "C:\\Users\\Roger\\.micropython-studio\\stubs\\micropython-esp32-stubs",      
+        ".venv/Lib/site-packages",
+        "typings"
+    ],    
+  "python.analysis.extraPaths": [
+    "C:\\Users\\Roger\\.micropython-studio\\stubs\\micropython-esp32-stubs",
+    "C:\\Users\\Roger\\.micropython-studio\\.venv\\Lib\\site-packages",
+    "./imu-viewer"
+  ],
+  "python.autoComplete.extraPaths": [
+    "C:\\Users\\Roger\\.micropython-studio\\stubs\\micropython-esp32-stubs",
+    "C:\\Users\\Roger\\.micropython-studio\\.venv\\Lib\\site-packages"
+  ],
+  "python.defaultInterpreterPath": "C:\\Users\\Roger\\.micropython-studio\\.venv\\Scripts\\python.exe",
+
+  "python.analysis.useLibraryCodeForTypes": true,
+  "python.analysis.diagnosticSeverityOverrides": {
+    "reportMissingModuleSource": "none",
+    "reportMissingModuleStubs": "none"
+  },
+  "files.exclude": {
+    "**/__pycache__": true,
+    "**/.mypy_cache": true
+  },
+  "python.terminal.activateEnvironment": false,
+    "[python]": {
+        "editor.defaultFormatter": "charliermarsh.ruff",
+        "editor.formatOnSave": false
+    },
+    "python.testing.pytestArgs": [
+      "main"
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true,
+
+
+  "licenser.license": "Custom",
+  "licenser.author": "Roger Leuthner",
+  "licenser.customHeader": "Copyright © 2026 Roger B. Leuthner. All rights reserved.  This software is provided for informational and educational purposes. Use of this software does not imply endorsement by the author of any particular use or application. The author assumes no responsibility or liability for any damages or consequences arising from its use."
+
+    
+  }
