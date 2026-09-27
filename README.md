@@ -58,7 +58,7 @@ Mi-Hole is composed of three major pieces:
           | HTTP / JSON API
           v
     +--------------------------------------+
-    |              ESP32-S3               |
+    |              ESP32-S3                |
     |                                      |
     |  +----------------+  +------------+  |
     |  |   DNS Server   |  |   DNSAPI   |  |
@@ -66,11 +66,11 @@ Mi-Hole is composed of three major pieces:
     |  | DNS filtering  |  | /api/health|  |
     |  | DNS forwarding |  | /api/stats |  |
     |  | Query tracking |  | /api/activity |
-    |  | Client tracking|  | /api/domains |
-    |  +-------+--------+  | /api/clients |
-    |          |           | /api/config  |
-    |          v           | /api/system  |
-    |  +----------------+  | /api/sbc     |
+    |  | Client tracking|  | /api/domains  |
+    |  +-------+--------+  | /api/clients  |
+    |          |           | /api/config   |
+    |          v           | /api/system   |
+    |  +----------------+  | /api/sbc      |
     |  | Statistics / DB|  | /api/throughput |
     |  +----------------+  | /api/stats/reset |
     |                      +------------+  |
@@ -85,84 +85,27 @@ The ESP32-S3 handles the DNS workload and telemetry. The dashboard remains a rel
 
 ---
 
-## Features
-
-### DNS Monitoring
-
-The dashboard provides an at-a-glance view of DNS activity including:
-
-- Total DNS queries
-- Blocked queries
-- Allowed queries
-- Block rate
-- Forwarded queries
-- DNS timeouts
-- DNS errors
-- Average upstream latency
-- Maximum upstream latency
-- Active clients
-
-### Live Activity
-
-Recent DNS requests are displayed in a live activity table containing:
-
-| Field | Description |
-|---|---|
-| Time | Relative time since the request |
-| Domain | Requested DNS domain |
-| Client | Requesting client |
-| Action | Blocked, allowed, timeout, or error |
-| Latency | Request latency |
-| Match | Matching block-list entry, when available |
-
-The dashboard refreshes recent activity approximately once per second.
-
-### Rankings
-
-Mi-Hole tracks and displays:
-
-- Top blocked domains
-- Top clients
-
-The dashboard uses proportional bars to make relative request volume easy to see.
-
-### Hardware Monitoring
+## Activity, Hardware, Rankings and Throughput Monitoring
 
 Because the monitoring API runs directly on the ESP32-S3, the dashboard can expose hardware-level information without requiring a separate monitoring system.
 
-Current telemetry includes:
+Mi-Hole also tracks request DNS throughput and ranking.
 
-- CPU frequency
-- Event-loop load estimate
-- Free heap
-- Allocated heap
-- Flash capacity
-- Flash usage
-- Flash free space
-- ESP32 temperature
-- Reset cause
-- Wi-Fi RSSI
-- Wi-Fi transmit power
-- Pending DNS requests
-- MicroPython version
-- Uptime
+---
 
-### Throughput Monitoring
+## Domain Name Database
 
-Mi-Hole also tracks request throughput:
+To conserve resoures and provide fast response, a DNS "block" database is pre-processed and then copied to the device.  
 
-- DNS queries/sec
-- HTTP requests/sec
-- HTTP bytes sent/sec
-- Total DNS queries
-- Total HTTP requests
-- Total HTTP response bytes
+It is a binary DNS filtering database runtime designed for high-speed DNS name matching on resource-constrained MicroPython environments. It stores DNS labels and domain relationships in a compact binary format and provides fast lookups directly against raw DNS wire-format packets without converting queries into strings. The implementation uses memory-efficient techniques including FNV-1a label hashing, binary-search indexes, a DAFSA-style state transition graph, reusable buffers, bounded caching, and DNS compression-pointer parsing. It supports exact domain matching as well as parent-domain matching (for example, allowing example.com to match www.example.com), while maintaining compatibility between CPython and MicroPython. The database format includes indexed labels, states, and transitions, for low-memory, high-throughput DNS filtering.
 
-The rate calculations are performed on the device rather than requiring a separate metrics stack.
+See <code>main/dns_database/dns_build.py</code>
 
-### Statistics Reset
+The generated database is found in: <code>main/dns_database/dns.db</code>
 
-The dashboard includes a **Clear statistics** action for resetting accumulated DNS statistics.
+_dns.db_ is a processed version of https://github.com/hagezi/dns-blocklists#closed_book-multi-ultimate-maximum-protection-most-aggressive-
+
+Note that the blocklist must contain one unembellished name per line before processing with _dns_build.py_, so the hagezi downloaded lists have to be hit with a little _vi_ or equivalent before using _dns_build.py_ to generate the consumable database.
 
 ---
 
@@ -183,14 +126,6 @@ The ESP32 exposes a small HTTP/JSON API intended specifically for the dashboard.
 | `GET` | `/api/throughput` | DNS/HTTP throughput |
 | `POST` | `/api/stats/reset` | Reset DNS statistics |
 
-Several endpoints accept a `limit` query parameter.
-
-For example:
-
-    GET /api/activity?limit=50
-    GET /api/domains?limit=10
-    GET /api/clients?limit=10
-
 ---
 
 ## HTTP API Design
@@ -206,28 +141,13 @@ It uses:
 - CORS headers
 - Connection-per-request HTTP handling
 - Lightweight telemetry collection
-
-Basic request protection is built into the server:
-
-- Request-line length is limited.
-- Header size is limited.
-- Malformed request lines return `400`.
-- Oversized request targets return `414`.
-- Oversized headers return `431`.
-- Unknown endpoints return `404`.
-- Unexpected server errors return `500`.
-
-Responses use `Cache-Control: no-store`, which is appropriate for live telemetry.
+- `Cache-Control: no-store`, appropriate for live telemetry.
 
 ---
 
 ## Event-Loop Load Monitoring
 
-One of the more interesting parts of the project is the CPU/load telemetry.
-
-A conventional desktop operating system provides CPU utilization metrics through the operating system. Bare-metal MicroPython does not provide an equivalent OS-level utilization counter.
-
-Mi-Hole therefore estimates event-loop load by measuring scheduling latency.
+Mi-Hole estimates event-loop load by measuring scheduling latency.
 
 The monitor repeatedly schedules a short sleep:
 
@@ -263,8 +183,6 @@ The web dashboard uses different polling intervals depending on the type of info
 | Configuration/system information | ~5 seconds |
 | SBC/throughput telemetry | ~2 seconds |
 
-This keeps the activity view responsive without unnecessarily polling the ESP32 for relatively static information.
-
 ---
 
 ## Firmware Startup
@@ -298,12 +216,6 @@ The application entry point performs the following sequence:
 
 The firmware uses `uasyncio` to run the HTTP monitoring API alongside the DNS server.
 
-On shutdown, the application attempts to close:
-
-- The HTTP API
-- The DNS server
-- The DNS database
-
 ---
 
 ## Hardware
@@ -313,8 +225,6 @@ On shutdown, the application attempts to close:
 **ESP32-S3**
 
 The project is designed around running the DNS appliance directly on an ESP32-S3 with Micropython 1.29.
-
-The exact hardware requirements may depend on the particular ESP32-S3 board being used.
 
 ---
 
@@ -352,10 +262,6 @@ The two sides communicate over the local network:
 ## Design Philosophy
 
 Mi-Hole is intentionally small.
-
-Rather than treating an ESP32 as a miniature Linux computer, the project works within the constraints of MicroPython and uses those constraints as part of the design.
-
-That means:
 
 - No heavyweight web framework
 - No external monitoring daemon
