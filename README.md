@@ -59,6 +59,7 @@ Mi-Hole is composed of three major pieces:
           v
     +--------------------------------------+
     |              ESP32-S3                |
+    |              ESP32-S3                |
     |                                      |
     |  +----------------+  +------------+  |
     |  |   DNS Server   |  |   DNSAPI   |  |
@@ -66,6 +67,11 @@ Mi-Hole is composed of three major pieces:
     |  | DNS filtering  |  | /api/health|  |
     |  | DNS forwarding |  | /api/stats |  |
     |  | Query tracking |  | /api/activity |
+    |  | Client tracking|  | /api/domains  |
+    |  +-------+--------+  | /api/clients  |
+    |          |           | /api/config   |
+    |          v           | /api/system   |
+    |  +----------------+  | /api/sbc      |
     |  | Client tracking|  | /api/domains  |
     |  +-------+--------+  | /api/clients  |
     |          |           | /api/config   |
@@ -85,6 +91,7 @@ The ESP32-S3 handles the DNS workload and telemetry. The dashboard remains a rel
 
 ---
 
+## Activity, Hardware, Rankings and Throughput Monitoring
 ## Activity, Hardware, Rankings and Throughput Monitoring
 
 Because the monitoring API runs directly on the ESP32-S3, the dashboard can expose hardware-level information without requiring a separate monitoring system.
@@ -142,11 +149,13 @@ It uses:
 - Connection-per-request HTTP handling
 - Lightweight telemetry collection
 - `Cache-Control: no-store`, appropriate for live telemetry.
+- `Cache-Control: no-store`, appropriate for live telemetry.
 
 ---
 
 ## Event-Loop Load Monitoring
 
+Mi-Hole estimates event-loop load by measuring scheduling latency.
 Mi-Hole estimates event-loop load by measuring scheduling latency.
 
 The monitor repeatedly schedules a short sleep:
