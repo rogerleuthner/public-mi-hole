@@ -49,20 +49,6 @@ Once connected to Wi-Fi, the device runs a DNS server that can filter DNS reques
 
 ---
 
-## See It in Action
-
-### YouTube Shorts [TBD]
-
-📺 **Mi-Hole in action**
-
-[▶ Watch on YouTube](YOUR_YOUTUBE_SHORT_URL_1)
-
-📺 **ESP32-S3 DNS monitoring**
-
-[▶ Watch on YouTube](YOUR_YOUTUBE_SHORT_URL_2)
-
----
-
 ## Architecture
 
 Mi-Hole is composed of three major pieces:
