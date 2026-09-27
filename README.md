@@ -1,3 +1,21 @@
+<p align="center">
+  <img src="docs/images/hero.png" alt="Mi-Hole" width="900">
+</p>
+
+<h1 align="center">Mi-Hole</h1>
+
+<p align="center">
+  ESP32-S3 DNS filtering and monitoring appliance built with MicroPython
+</p>
+
+<p align="center">
+  <a href="YOUR_YOUTUBE_SHORT_URL_1">▶ Watch it in action</a>
+  &nbsp;&nbsp;•&nbsp;&nbsp;
+  <a href="YOUR_YOUTUBE_SHORT_URL_2">▶ See the dashboard</a>
+</p>
+
+<hr>
+
 # Mi-Hole
 
 **A lightweight DNS filtering and monitoring appliance built on the ESP32-S3 and MicroPython.**
