@@ -92,7 +92,6 @@ The ESP32-S3 handles the DNS workload and telemetry. The dashboard remains a rel
 ---
 
 ## Activity, Hardware, Rankings and Throughput Monitoring
-## Activity, Hardware, Rankings and Throughput Monitoring
 
 Because the monitoring API runs directly on the ESP32-S3, the dashboard can expose hardware-level information without requiring a separate monitoring system.
 
@@ -149,13 +148,11 @@ It uses:
 - Connection-per-request HTTP handling
 - Lightweight telemetry collection
 - `Cache-Control: no-store`, appropriate for live telemetry.
-- `Cache-Control: no-store`, appropriate for live telemetry.
 
 ---
 
 ## Event-Loop Load Monitoring
 
-Mi-Hole estimates event-loop load by measuring scheduling latency.
 Mi-Hole estimates event-loop load by measuring scheduling latency.
 
 The monitor repeatedly schedules a short sleep:
@@ -177,20 +174,6 @@ The monitor repeatedly schedules a short sleep:
 When the event loop is lightly loaded, the task generally wakes close to its requested interval. As other work occupies the event loop, the observed scheduling delay increases.
 
 The resulting value should therefore be treated as an **event-loop load estimate**, rather than an exact hardware CPU-utilization measurement.
-
----
-
-## Dashboard Refresh Rates
-
-The web dashboard uses different polling intervals depending on the type of information.
-
-| Data | Refresh |
-|---|---:|
-| DNS statistics | ~2 seconds |
-| Recent activity | ~1 second |
-| Domain/client rankings | ~5 seconds |
-| Configuration/system information | ~5 seconds |
-| SBC/throughput telemetry | ~2 seconds |
 
 ---
 
@@ -254,18 +237,6 @@ The project is designed around running the DNS appliance directly on an ESP32-S3
 - TypeScript
 - Browser-based HTTP/JSON polling
 
-The two sides communicate over the local network:
-
-    ESP32-S3
-       |
-       | HTTP / JSON
-       v
-    Browser
-       |
-       v
-    React Dashboard
-
-
 ---
 
 ## Design Philosophy
@@ -285,25 +256,7 @@ The dashboard is primarily a window into what the ESP32 is already doing.
 
 ---
 
-## Why an ESP32-S3?
-
-A DNS appliance does not necessarily need a general-purpose computer.
-
-The ESP32-S3 provides:
-
-- Wi-Fi connectivity
-- A capable microcontroller
-- Sufficient resources for this type of application
-- Hardware telemetry
-- Low power requirements
-- A compact physical footprint
-- An inexpensive platform for experimentation
-
-The project is therefore as much an exploration of **how far a microcontroller can be pushed as a practical network appliance** as it is a DNS filtering project.
-
----
-
-## Current Limitations
+## Limitations
 
 This project is intentionally aimed at experimentation, learning, and small-scale deployments.
 
