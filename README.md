@@ -40,15 +40,12 @@ Once connected to Wi-Fi, the device runs a DNS server that can filter DNS reques
 
 ### Dashboard
 
-![Mi-Hole dashboard](docs/images/dashboard.png)
+![Mi-Hole dashboard](media/dashboard.jpg)
 
 ### DNS Activity
 
-![Mi-Hole DNS activity](docs/images/activity.png)
+![Mi-Hole DNS activity](media/activity.jpg)
 
-### System Monitoring
-
-![Mi-Hole system monitoring](docs/images/system.png)
 
 ---
 
