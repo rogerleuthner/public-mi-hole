@@ -36,8 +36,6 @@ Once connected to Wi-Fi, the device runs a DNS server that can filter DNS reques
 
 ## Screenshots
 
-> Add your actual screenshots to the repository and update the paths below.
-
 ### Dashboard
 
 ![Mi-Hole dashboard](media/dashboard.jpg)
@@ -51,7 +49,7 @@ Once connected to Wi-Fi, the device runs a DNS server that can filter DNS reques
 
 ## See It in Action
 
-### YouTube Shorts
+### YouTube Shorts [TBD]
 
 📺 **Mi-Hole in action**
 
@@ -60,8 +58,6 @@ Once connected to Wi-Fi, the device runs a DNS server that can filter DNS reques
 📺 **ESP32-S3 DNS monitoring**
 
 [▶ Watch on YouTube](YOUR_YOUTUBE_SHORT_URL_2)
-
-> Replace the placeholder URLs above with the actual YouTube Shorts URLs.
 
 ---
 
