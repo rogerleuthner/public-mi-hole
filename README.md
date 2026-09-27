@@ -11,7 +11,7 @@
 <p align="center">
 <!--
   <a href="[![Watch it in action](https://img.youtube.com/vi/D5P4xrF4DOM/hqdefault.jpg)](https://youtu.be/D5P4xrF4DOM)">▶ Watch it in action</a> -->
-  <a href="https://img.youtube.com/vi/D5P4xrF4DOM/hqdefault.jpg">▶ Watch it in action</a>
+  <a href="https://youtu.be/D5P4xrF4DOM">▶ Watch it in action</a>
   &nbsp;&nbsp;•&nbsp;&nbsp;
   <a href="YOUR_YOUTUBE_SHORT_URL_2">▶ See the dashboard</a>
 </p>
