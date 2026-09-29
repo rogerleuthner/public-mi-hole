@@ -14,6 +14,9 @@ from config import (
 )
 from dns_database.dnsd import DNSDatabase
 from dns_stats import DNSStats
+from machine import Pin
+import neopixel
+import asyncio
 
 BUFFER_SIZE = 1536
 TIMEOUT_MS = 2000
@@ -78,6 +81,8 @@ class DNSServer:
 
         self.receiver_task = None
         self.cleanup_task = None
+        
+        self.led = neopixel.NeoPixel(Pin(48), 1)
 
     # ================================================================
     # DNS parsing
@@ -211,6 +216,13 @@ class DNSServer:
     # DNS request handling
     # ================================================================
 
+    async def flash(self, color, duration_ms=1):
+        self.led[0] = color
+        self.led.write()
+        await asyncio.sleep_ms(duration_ms)
+        self.led[0] = (0,0,0)
+        self.led.write()
+
     async def handle_request(
         self,
         packet,
@@ -248,6 +260,11 @@ class DNSServer:
             packet,
             12,
         )
+
+        if blocked:
+            asyncio.create_task(self.flash((255,0,0)))
+        else:
+            asyncio.create_task(self.flash((0,255,0)))
 
         activity_id = self.stats.record_query(
             domain,
